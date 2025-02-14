@@ -1,0 +1,38 @@
+/* Basic reset or styling for the body */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 0;
+}
+
+/* Main heading styling */
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Section styling */
+#register-section,
+#login-section,
+#employee-section,
+#guest-section {
+  margin-bottom: 30px;
+  border: 1px solid #ccc;
+  padding: 15px;
+}
+
+/* Inputs and select elements share similar styling */
+input,
+select {
+  display: block;
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 200px;
+}
+
+/* Simple button styling */
+button {
+  margin-bottom: 10px;
+  padding: 8px 15px;
+  cursor: pointer;
+}

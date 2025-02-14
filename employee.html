@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Dashboard</title>
+  <script type="module" src="employee.js"></script>
+</head>
+<body>
+  <h1>Employee Dashboard</h1>
+  <p>Add a new room:</p>
+
+  <input type="text" id="room-id" placeholder="Room ID">
+  <input type="text" id="room-type" placeholder="Type (e.g., Single, Double)">
+  <input type="number" id="room-price" placeholder="Price">
+  <select id="room-availability">
+    <option value="true">Available</option>
+    <option value="false">Occupied</option>
+  </select>
+  <button id="add-room-btn">Add Room</button>
+
+  <button id="logout-btn">Logout</button>
+</body>
+</html>

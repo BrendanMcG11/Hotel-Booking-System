@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Hotel Booking System</title>
+  <!-- Link to our CSS file -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Hotel Booking System</h1>
+
+  <!-- REGISTRATION SECTION -->
+  <div id="register-section">
+    <h2>Register</h2>
+    <!-- Email input -->
+    <input type="email" id="register-email" placeholder="Email" />
+    <!-- Password input -->
+    <input type="password" id="register-password" placeholder="Password" />
+    <!-- Role selection (Guest or Employee) -->
+    <select id="register-role">
+      <option value="guest">Guest</option>
+      <option value="employee">Employee</option>
+    </select>
+    <!-- Button to submit registration -->
+    <button id="register-btn">Register</button>
+  </div>
+
+  <!-- LOGIN SECTION -->
+  <div id="login-section">
+    <h2>Login</h2>
+    <!-- Email input -->
+    <input type="email" id="login-email" placeholder="Email" />
+    <!-- Password input -->
+    <input type="password" id="login-password" placeholder="Password" />
+    <!-- Button to submit login -->
+    <button id="login-btn">Login</button>
+    <!-- Logout button (shown only if user is logged in) -->
+    <button id="logout-btn" style="display: none;">Logout</button>
+  </div>
+
+  <!-- EMPLOYEE SECTION (hidden by default) -->
+  <div id="employee-section" style="display: none;">
+    <h2>Employee Dashboard</h2>
+
+    <!-- ADD ROOM FORM -->
+    <h3>Add Room</h3>
+    <input type="text" id="room-number" placeholder="Room Number" />
+    <input type="text" id="room-type" placeholder="Room Type (e.g., Deluxe)" />
+    <input type="number" id="room-capacity" placeholder="Capacity" />
+    <input type="number" id="room-price" placeholder="Price per night" />
+    <button id="add-room-btn">Add Room</button>
+
+    <!-- MANAGE ROOMS LIST -->
+    <h3>Manage Rooms</h3>
+    <div id="employee-rooms-list"></div>
+    
+    <!-- VIEW ALL BOOKINGS -->
+    <h3>All Bookings</h3>
+    <button id="view-all-bookings-btn">View All Bookings</button>
+    <div id="all-bookings-list"></div>
+  </div>
+
+  <!-- GUEST SECTION (hidden by default) -->
+  <div id="guest-section" style="display: none;">
+    <h2>Guest Dashboard</h2>
+
+    <!-- LOAD & VIEW AVAILABLE ROOMS -->
+    <h3>Available Rooms</h3>
+    <button id="load-rooms-btn">Load Rooms</button>
+    <div id="rooms-list"></div>
+    
+    <!-- VIEW & MANAGE USER'S OWN BOOKINGS -->
+    <h3>My Bookings</h3>
+    <button id="view-my-bookings-btn">View My Bookings</button>
+    <div id="my-bookings-list"></div>
+  </div>
+
+  <!-- Main App JavaScript (ES Module) -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
