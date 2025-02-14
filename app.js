@@ -64,9 +64,11 @@ const guestSection     = document.getElementById('guest-section');
 registerBtn.addEventListener('click', async () => {
   const email = registerEmail.value.trim();
   const password = registerPassword.value.trim();
+  const fname    = registerFname.value.trim();
+  const surname  = registerSurname.value.trim();
+  const phone    = registerPhone.value.trim();
 
-
-  if (!email || !password ) {
+  if (!email || !password || !fname || !surname || !phone) {
     alert("Please enter all required fields.");
     return;
   }
@@ -88,7 +90,10 @@ registerBtn.addEventListener('click', async () => {
     const userRef = doc(db, "users", user.uid);
     await setDoc(userRef, { 
       email, 
-      role
+      role,
+      fname,
+      surname,
+      phone
     });
 
     console.log("User data saved to Firestore:", { email, role });
@@ -155,6 +160,9 @@ onAuthStateChanged(auth, async (user) => {
         setTimeout(() => {
           window.location.href = "employee.html";
         }, 500);
+      } else if (userData.role === "admin") {
+        // redirect to admin
+        window.location.href = "admin.html";
       } else {
         console.log("🔹 Redirecting to Guest Page...");
         setTimeout(() => {

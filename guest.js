@@ -18,6 +18,7 @@ const db = getFirestore(app);
 
 const logoutBtn = document.getElementById("logout-btn");
 const roomList = document.getElementById("room-list");
+const welcomeText = document.getElementById("welcome-text");
 
 // Fetch rooms from Firestore
 async function loadRooms() {
@@ -46,6 +47,19 @@ onAuthStateChanged(auth, async (user) => {
       window.location.href = "index.html"; // Ensure redirection only happens once
     }, 1000); // Add a slight delay to avoid instant redirection loops
   }*/
+
+    // 1) Load the user's name and phone
+    const userDocRef = doc(db, "users", user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+    if (userDocSnap.exists()) {
+      const userData = userDocSnap.data();
+      const fullName = `${userData.fname} ${userData.surname}`;
+      document.getElementById("welcome-text") = `Welcome, ${fullName}!`;
+      console.log("User data:", userData);
+    } else {
+      // If no doc, might be an error or you haven't stored it
+      document.getElementById("welcome-text") = "Welcome!";
+    }
 });
 
 

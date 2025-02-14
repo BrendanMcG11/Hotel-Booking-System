@@ -3,38 +3,83 @@ body {
   font-family: Arial, sans-serif;
   margin: 20px;
   padding: 0;
+  background-color: #f4f4f4;
 }
 
 /* Main heading styling */
-h1 {
+h1, h2 {
   text-align: center;
-  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Paragraph styling */
+p {
+  text-align: center;
+  color: #555;
 }
 
 /* Section styling */
 #register-section,
 #login-section,
 #employee-section,
-#guest-section {
-  margin-bottom: 30px;
-  border: 1px solid #ccc;
-  padding: 15px;
+#guest-section,
+#admin-form-container,
+#room-form {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
-/* Inputs and select elements share similar styling */
-input,
-select {
+/* Added margin-bottom for a gap between Register and Login sections */
+#register-section {
+  margin-bottom: 50px; /* Adjust this value as needed */
+}
+
+/* Input and select element styling */
+input, select {
   display: block;
-  margin-bottom: 10px;
-  padding: 8px;
-  width: 200px;
+  width: calc(100% - 20px);
+  margin: 10px auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
-/* Simple button styling */
+/* Button styling */
 button {
-  margin-bottom: 10px;
-  padding: 8px 15px;
+  display: block;
+  width: calc(100% - 20px);
+  margin: 10px auto;
+  padding: 10px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
 }
 
+button:hover {
+  background: #0056b3;
+}
 
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+table th, table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+table th {
+  background: #f4f4f4;
+}

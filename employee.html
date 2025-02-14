@@ -4,30 +4,47 @@
   <meta charset="UTF-8">
   <title>Employee Dashboard</title>
   <script type="module" src="employee.js"></script>
+  <link rel="stylesheet" href="employee-style.css">
 </head>
 <body>
   <h1>Employee Dashboard</h1>
 
   <!-- Admin-only form to create employees -->
-<div id="admin-form-container" style="display:none;">
-  <h2>Create New Employee</h2>
-  <input type="text" id="new-emp-name" placeholder="Employee Name">
-  <input type="text" id="new-emp-phone" placeholder="Employee Phone">
-  <input type="email" id="new-emp-email" placeholder="Employee Email">
-  <button id="create-employee-btn">Create Employee</button>
-</div>
+  <div id="admin-form-container" style="display:none;">
+    <h2>Create New Employee</h2>
+    <input type="text" id="new-emp-name" placeholder="Employee Name">
+    <input type="text" id="new-emp-phone" placeholder="Employee Phone">
+    <input type="email" id="new-emp-email" placeholder="Employee Email">
+    <button id="create-employee-btn">Create Employee</button>
+  </div>
 
-  <p>Add a new room:</p>
+  <p>Add or Edit a Room:</p>
 
-  <input type="text" id="room-id" placeholder="Room ID">
-  <input type="text" id="room-type" placeholder="Type (e.g., Single, Double)">
-  <input type="number" id="room-price" placeholder="Price">
-  <select id="room-availability">
-    <option value="true">Available</option>
-    <option value="false">Occupied</option>
+  <!-- Dropdown to select a room to edit -->
+  <select id="room-select">
+    <option value="">Add a new room</option>
+    <!-- Room options will be populated here -->
   </select>
-  <button id="add-room-btn">Add Room</button>
 
-  <button id="logout-btn">Logout</button>
+  <div id="room-form">
+    <input type="text" id="room-id" placeholder="Room ID">
+    
+    <!-- Updated Room Type Dropdown -->
+    <select id="room-type">
+      <option value="single">Single</option>
+      <option value="double">Double</option>
+    </select>
+    
+    <input type="number" id="room-price" placeholder="Price">
+    <select id="room-availability">
+      <option value="true">Available</option>
+      <option value="false">Occupied</option>
+      <option value="maintenance">Maintenance</option>
+    </select>
+    <button id="add-room-btn">Add Room</button>
+    <button id="update-room-btn" style="display: none;">Update Room</button>
+
+    <button id="logout-btn">Logout</button>
+  </div>
 </body>
 </html>

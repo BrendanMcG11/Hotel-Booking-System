@@ -1,0 +1,26 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <!-- Link your CSS if you like -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  
+  <div id="admin-only-section" style="display:none;">
+    <h2>Create Employee</h2>
+    <p>Fill out the form to create a new employee account:</p>
+    <input type="text" id="new-emp-name" placeholder="Employee Name">
+    <input type="text" id="new-emp-phone" placeholder="Employee Phone">
+    <input type="email" id="new-emp-email" placeholder="Employee Email">
+    <button id="create-employee-btn">Create Employee</button>
+  </div>
+
+  <button id="logout-btn">Logout</button>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
