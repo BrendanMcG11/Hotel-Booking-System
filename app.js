@@ -64,15 +64,14 @@ const guestSection     = document.getElementById('guest-section');
 registerBtn.addEventListener('click', async () => {
   const email = registerEmail.value.trim();
   const password = registerPassword.value.trim();
-  const role = registerRole.value.trim();
-  const fname = registerFname.value.trim();
-  const surname = registerSurname.value.trim();
-  const phone = registerPhone.value.trim();
 
-  if (!email || !password || !role || !fname || !surname || !phone) {
+
+  if (!email || !password ) {
     alert("Please enter all required fields.");
     return;
   }
+  
+  const role = "guest";
 
   try {
     // Create user
@@ -82,23 +81,17 @@ registerBtn.addEventListener('click', async () => {
     console.log("User created:", user.uid);
 
     // Assign a unique ID for employees
-    let userId = user.uid;
-    if (role === "employee") {
-      userId = "EMP-" + Math.floor(1000 + Math.random() * 9000); // Generate random employee ID
-    }
+
+    
 
     // Store user role and personal info in Firestore
     const userRef = doc(db, "users", user.uid);
     await setDoc(userRef, { 
       email, 
-      role, 
-      fname, 
-      surname, 
-      phone,
-      userId
+      role
     });
 
-    console.log("User data saved to Firestore:", { email, role, fname, surname, phone, userId });
+    console.log("User data saved to Firestore:", { email, role });
     alert("Registered successfully! You can now log in.");
   } catch (error) {
     console.error("Error registering user:", error.message);

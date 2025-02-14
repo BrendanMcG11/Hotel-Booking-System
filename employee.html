@@ -7,6 +7,16 @@
 </head>
 <body>
   <h1>Employee Dashboard</h1>
+
+  <!-- Admin-only form to create employees -->
+<div id="admin-form-container" style="display:none;">
+  <h2>Create New Employee</h2>
+  <input type="text" id="new-emp-name" placeholder="Employee Name">
+  <input type="text" id="new-emp-phone" placeholder="Employee Phone">
+  <input type="email" id="new-emp-email" placeholder="Employee Email">
+  <button id="create-employee-btn">Create Employee</button>
+</div>
+
   <p>Add a new room:</p>
 
   <input type="text" id="room-id" placeholder="Room ID">
