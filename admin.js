@@ -43,7 +43,9 @@ import {
   const adminOnlySection   = document.getElementById("admin-only-section");
   const createEmployeeBtn  = document.getElementById("create-employee-btn");
   const logoutBtn          = document.getElementById("logout-btn");
-  
+  const usersList = document.getElementById("users-list");
+  const loginsList = document.getElementById("logins-list");
+
   /***************************************************
    * 3. AUTH STATE CHECK
    ***************************************************/
@@ -75,6 +77,79 @@ import {
       window.location.href = "index.html";
     }
   });
+
+  // Function to load all users (Guests & Employees)
+async function loadUsers() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "users"));
+    
+    if (querySnapshot.empty) {
+      console.log("❌ No users found in Firestore.");
+      usersList.innerHTML = "<tr><td colspan='4'>No users found</td></tr>";
+      return;
+    }
+
+    usersList.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+      const user = doc.data();
+      console.log("✅ User found:", user);  // Debugging log
+
+      usersList.innerHTML += `
+        <tr>
+          <td>${user.fname ? user.fname + " " + user.surname : "N/A"}</td>
+          <td>${user.email}</td>
+          <td>${user.phone || "N/A"}</td>
+          <td>${user.role}</td>
+        </tr>
+      `;
+    });
+  } catch (error) {
+    console.error("❌ Error fetching users:", error);
+    usersList.innerHTML = "<tr><td colspan='4'>Error loading users</td></tr>";
+  }
+}
+
+// Function to load Employee Logins
+async function loadEmployeeLogins() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "logins"));
+    
+    if (querySnapshot.empty) {
+      console.log("❌ No employee logins found.");
+      loginsList.innerHTML = "<tr><td colspan='3'>No logins found</td></tr>";
+      return;
+    }
+
+    loginsList.innerHTML = "";
+    querySnapshot.forEach((doc) => {
+      const loginData = doc.data();
+      console.log("✅ Employee login found:", loginData);  // Debugging log
+
+      loginsList.innerHTML += `
+        <tr>
+          <td>${loginData.name}</td>
+          <td>${loginData.email}</td>
+          <td>${new Date(loginData.lastLogin).toLocaleString()}</td>
+        </tr>
+      `;
+    });
+  } catch (error) {
+    console.error("❌ Error fetching logins:", error);
+    loginsList.innerHTML = "<tr><td colspan='3'>Error loading logins</td></tr>";
+  }
+}
+
+// Check Admin Authentication & Load Data
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    console.log("✅ Admin logged in:", user.email);
+    await loadUsers();
+    await loadEmployeeLogins();
+  } else {
+    console.log("❌ No admin detected. Redirecting to login.");
+    window.location.replace("index.html");
+  }
+});
   
   /***************************************************
    * 4. CREATE EMPLOYEE (Example Implementation)

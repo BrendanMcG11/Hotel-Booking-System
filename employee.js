@@ -201,3 +201,30 @@ logoutBtn.addEventListener("click", async () => {
     alert("Error logging out: " + error.message);
   }
 });
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const userDocRef = doc(db, "users", user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (userDocSnap.exists()) {
+      const userData = userDocSnap.data();
+      if (userData.role === "employee") {
+        console.log("✅ Employee logged in:", userData.email);
+
+        // Log login time
+        const loginDocRef = doc(db, "logins", user.uid);
+        await setDoc(loginDocRef, {
+          name: `${userData.fname} ${userData.surname}`,
+          email: userData.email,
+          lastLogin: new Date().toISOString()
+        });
+
+      } else {
+        console.log("❌ User is not an employee.");
+      }
+    } else {
+      console.log("❌ User data not found.");
+    }
+  }
+});

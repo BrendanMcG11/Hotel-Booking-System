@@ -16,75 +16,75 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const logoutBtn = document.getElementById("logout-btn");
 const roomList = document.getElementById("room-list");
-const welcomeText = document.getElementById("welcome-text");
+const searchBox = document.getElementById("search-box");
+const filterAvailability = document.getElementById("filter-availability");
+const sortPriceBtn = document.getElementById("sort-price");
+let roomsData = [];
 
-// Fetch rooms from Firestore
 async function loadRooms() {
   const querySnapshot = await getDocs(collection(db, "rooms"));
-  roomList.innerHTML = ""; // Clear table before loading
+  roomsData = [];
   querySnapshot.forEach((doc) => {
-    const room = doc.data();
-    roomList.innerHTML += `
-      <tr>
-        <td>${doc.id}</td>
-        <td>${room.type}</td>
-        <td>$${room.price}</td>
-        <td>${room.available ? "Available" : "Occupied"}</td>
-      </tr>
+    roomsData.push({ id: doc.id, ...doc.data() });
+  });
+  displayRooms(roomsData);
+}
+
+function displayRooms(rooms) {
+  roomList.innerHTML = "";
+  rooms.forEach(room => {
+    const row = document.createElement("tr");
+    const imagePath = `images/${room.id}.jpg`; // Assuming images are named after room IDs
+
+    row.innerHTML = `
+      <td><img src="${imagePath}" alt="Room Image" class="room-image" onerror="this.onerror=null; this.src='images/default.jpg';"></td>
+      <td>${room.id}</td>
+      <td>${room.type}</td>
+      <td>$${room.price.toFixed(2)}</td>
+      <td class="${room.available ? 'available' : 'occupied'}">${room.available ? "Available" : "Occupied"}</td>
     `;
+    roomList.appendChild(row);
   });
 }
 
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    console.log("User authenticated:", user.uid);
-    await loadRooms(); // Load rooms after confirming authentication
-  } /*else {
-    console.log("No user detected. Redirecting to login...");
-    setTimeout(() => {
-      window.location.href = "index.html"; // Ensure redirection only happens once
-    }, 1000); // Add a slight delay to avoid instant redirection loops
-  }*/
-
-    // 1) Load the user's name and phone
-    const userDocRef = doc(db, "users", user.uid);
-    const userDocSnap = await getDoc(userDocRef);
-    if (userDocSnap.exists()) {
-      const userData = userDocSnap.data();
-      const fullName = `${userData.fname} ${userData.surname}`;
-      document.getElementById("welcome-text") = `Welcome, ${fullName}!`;
-      console.log("User data:", userData);
-    } else {
-      // If no doc, might be an error or you haven't stored it
-      document.getElementById("welcome-text") = "Welcome!";
-    }
+// Filtering Function
+filterAvailability.addEventListener("change", () => {
+  const filterValue = filterAvailability.value;
+  let filteredRooms = roomsData;
+  if (filterValue === "available") {
+    filteredRooms = roomsData.filter(room => room.available);
+  } else if (filterValue === "occupied") {
+    filteredRooms = roomsData.filter(room => !room.available);
+  }
+  displayRooms(filteredRooms);
 });
 
+// Search Function
+searchBox.addEventListener("input", () => {
+  const query = searchBox.value.toLowerCase();
+  const filteredRooms = roomsData.filter(room => 
+    room.id.toLowerCase().includes(query) || 
+    room.type.toLowerCase().includes(query)
+  );
+  displayRooms(filteredRooms);
+});
 
-logoutBtn.addEventListener("click", async () => {
-  try {
-    await signOut(auth);
-    console.log("✅ Successfully logged out");
+// Sorting Function
+let sortAsc = true;
+sortPriceBtn.addEventListener("click", () => {
+  sortAsc = !sortAsc;
+  roomsData.sort((a, b) => sortAsc ? a.price - b.price : b.price - a.price);
+  displayRooms(roomsData);
+});
 
-    // Set a flag to prevent redirect loops
-    sessionStorage.setItem("logout", "true");
-
-    // Fully clear Firebase session
-    localStorage.clear();
-    sessionStorage.clear();
-
-    // Delay redirect to ensure Firebase logout completes
-    setTimeout(() => {
-      window.location.replace("index.html"); // Use replace to prevent back navigation
-    }, 1000);
-  } catch (error) {
-    console.error("❌ Logout failed:", error);
-    alert("Error logging out: " + error.message);
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    await loadRooms();
   }
 });
 
-
-
-
+document.getElementById("logout-btn").addEventListener("click", async () => {
+  await signOut(auth);
+  window.location.replace("index.html");
+});

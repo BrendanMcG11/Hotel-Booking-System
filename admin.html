@@ -19,6 +19,37 @@
     <button id="create-employee-btn">Create Employee</button>
   </div>
 
+    <!-- Section to display all users -->
+    <h2>All Users (Employees & Guests)</h2>
+    <table id="users-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody id="users-list">
+        <!-- Users will be populated here -->
+      </tbody>
+    </table>
+  
+    <!-- Section to track Employee Logins -->
+    <h2>Employee Logins</h2>
+    <table id="logins-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Last Login</th>
+        </tr>
+      </thead>
+      <tbody id="logins-list">
+        <!-- Logins will be populated here -->
+      </tbody>
+    </table>
+
   <button id="logout-btn">Logout</button>
 
   <script type="module" src="admin.js"></script>

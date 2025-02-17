@@ -83,3 +83,82 @@ table th, table td {
 table th {
   background: #f4f4f4;
 }
+
+#filter-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 600px;
+  margin: 10px auto;
+}
+
+#search-box, #filter-availability {
+  width: 48%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#room-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#room-table th, #room-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+#room-table th {
+  background: #007bff;
+  color: white;
+}
+
+#room-table .available {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+#room-table .occupied {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+#sort-price {
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Room image styling */
+.room-image {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+th {
+  background: #007bff;
+  color: white;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
