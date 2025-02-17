@@ -66,16 +66,7 @@ import {
       if (userData.role === "admin") {
         // Show the admin section
         adminOnlySection.style.display = "block";
-      } else {
-        // Not admin; redirect to employee or guest page as needed
-        alert("Unauthorized access. Redirecting...");
-        window.location.href = "index.html";
-      }
-    } else {
-      // If the document doesn't exist, redirect
-      alert("No user data found. Redirecting...");
-      window.location.href = "index.html";
-    }
+      } }
   });
 
   // Function to load all users (Guests & Employees)
