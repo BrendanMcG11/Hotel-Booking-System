@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Room</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="booking.js"></script>
+</head>
+<body>
+    <h1>Book Your Stay</h1>
+
+    <div id="booking-container">
+        <p>Selected Room: <span id="room-id"></span></p>
+
+        <label for="check-in">Check-in Date:</label>
+        <input type="date" id="check-in" required>
+
+        <label for="check-out">Check-out Date:</label>
+        <input type="date" id="check-out" required>
+
+        <button id="confirm-booking">Confirm Booking</button>
+    </div>
+
+    <p id="booking-status"></p>
+</body>
+</html>

@@ -13,11 +13,6 @@
   <!-- Search and Filter Section -->
   <div id="filter-container">
     <input type="text" id="search-box" placeholder="Search Room ID or Type...">
-    <select id="filter-availability">
-      <option value="all">All Rooms</option>
-      <option value="available">Available</option>
-      <option value="occupied">Occupied</option>
-    </select>
   </div>
 
   <table id="room-table">
@@ -27,7 +22,7 @@
         <th>Room ID</th>
         <th>Type</th>
         <th>Price <button id="sort-price">⇅</button></th>
-        <th>Availability</th>
+        <th>Action</th>  <!-- Updated column header -->
       </tr>
     </thead>
     <tbody id="room-list">
@@ -37,4 +32,6 @@
 
   <button id="logout-btn">Logout</button>
 </body>
+</html>
+
 </html>

@@ -162,3 +162,9 @@ th {
 tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+
+.employees-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}

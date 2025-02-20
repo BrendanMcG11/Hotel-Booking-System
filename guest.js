@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-auth.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-auth.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -18,7 +18,6 @@ const db = getFirestore(app);
 
 const roomList = document.getElementById("room-list");
 const searchBox = document.getElementById("search-box");
-const filterAvailability = document.getElementById("filter-availability");
 const sortPriceBtn = document.getElementById("sort-price");
 let roomsData = [];
 
@@ -42,23 +41,20 @@ function displayRooms(rooms) {
       <td>${room.id}</td>
       <td>${room.type}</td>
       <td>$${room.price.toFixed(2)}</td>
-      <td class="${room.available ? 'available' : 'occupied'}">${room.available ? "Available" : "Occupied"}</td>
+      <td><button class="book-btn" data-room="${room.id}">Book Now</button></td>
     `;
+
     roomList.appendChild(row);
   });
-}
 
-// Filtering Function
-filterAvailability.addEventListener("change", () => {
-  const filterValue = filterAvailability.value;
-  let filteredRooms = roomsData;
-  if (filterValue === "available") {
-    filteredRooms = roomsData.filter(room => room.available);
-  } else if (filterValue === "occupied") {
-    filteredRooms = roomsData.filter(room => !room.available);
-  }
-  displayRooms(filteredRooms);
-});
+  // Add event listeners to the "Book Now" buttons
+  document.querySelectorAll(".book-btn").forEach(button => {
+    button.addEventListener("click", (event) => {
+      const roomId = event.target.getAttribute("data-room");
+      window.location.href = `booking.html?room=${roomId}`;
+    });
+  });
+}
 
 // Search Function
 searchBox.addEventListener("input", () => {
@@ -78,11 +74,8 @@ sortPriceBtn.addEventListener("click", () => {
   displayRooms(roomsData);
 });
 
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    await loadRooms();
-  }
-});
+// Load rooms data immediately without authentication check
+loadRooms();
 
 document.getElementById("logout-btn").addEventListener("click", async () => {
   await signOut(auth);
