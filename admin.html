@@ -1,57 +1,95 @@
-<!-- admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
-  <!-- Link your CSS if you like -->
+  <!-- Link to external stylesheet -->
   <link rel="stylesheet" href="style.css">
+  <style>
+    .user-lists {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px; /* Adjust the gap as needed */
+    }
+  </style>
 </head>
 <body>
+
+  <!-- Admin Dashboard Header -->
   <h1>Admin Dashboard</h1>
-  
+
+  <!-- Admin-Only Section: Employee Creation Form -->
   <div id="admin-only-section" style="display:none;">
     <h2>Create Employee</h2>
     <p>Fill out the form to create a new employee account:</p>
+
+    <!-- Employee Creation Input Fields -->
     <input type="text" id="new-emp-name" placeholder="Employee Name">
     <input type="text" id="new-emp-phone" placeholder="Employee Phone">
     <input type="email" id="new-emp-email" placeholder="Employee Email">
+
+    <!-- Button to Create Employee -->
     <button id="create-employee-btn">Create Employee</button>
   </div>
 
-    <!-- Section to display all users -->
-    <h2>All Users (Employees & Guests)</h2>
-    <table id="users-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Role</th>
-        </tr>
-      </thead>
-      <tbody id="users-list">
-        <!-- Users will be populated here -->
-      </tbody>
-    </table>
-  
-    <!-- Section to track Employee Logins -->
-    <h2>Employee Logins</h2>
-    <table id="logins-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Last Login</th>
-        </tr>
-      </thead>
-      <tbody id="logins-list">
-        <!-- Logins will be populated here -->
-      </tbody>
-    </table>
+  <!-- Section to Display Employees and Guests -->
+  <div class="user-lists">
+    <!-- Guests List -->
+    <div>
+      <h2>Guests</h2>
+      <table id="guests-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody id="guests-list">
+          <!-- Guest data will be dynamically populated here -->
+        </tbody>
+      </table>
+    </div>
 
+    <!-- Employees List -->
+    <div>
+      <h2>Employees</h2>
+      <table id="employees-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody id="employees-list">
+          <!-- Employee data will be dynamically populated here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section to Track Employee Logins -->
+  <h2>Employee Logins</h2>
+  <table id="logins-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Last Login</th>
+      </tr>
+    </thead>
+    <tbody id="logins-list">
+      <!-- Login data will be dynamically populated here -->
+    </tbody>
+  </table>
+
+  <!-- Logout Button -->
   <button id="logout-btn">Logout</button>
 
+  <!-- JavaScript File -->
   <script type="module" src="admin.js"></script>
+
 </body>
 </html>

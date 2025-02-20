@@ -11,7 +11,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  setPersistence,
+  browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-auth.js";
 
 import {
@@ -22,7 +24,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js";
 
 /**
- * Firebase config
+ * Firebase Configuration
  */
 const firebaseConfig = {
   apiKey: "AIzaSyDw5aeA0uwE7R06Ht1wjkx6TcehPWs0Hac",
@@ -37,26 +39,29 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db   = getFirestore(app);
+const db = getFirestore(app);
 
 /***************************************************
  * 2. DOM ELEMENT REFERENCES
  ***************************************************/
-const registerEmail    = document.getElementById('register-email');
+// Registration form elements
+const registerEmail = document.getElementById('register-email');
 const registerPassword = document.getElementById('register-password');
-const registerRole     = document.getElementById('register-role');
-const registerFname    = document.getElementById('register-fname');
-const registerSurname  = document.getElementById('register-surname');
-const registerPhone    = document.getElementById('register-phone');
-const registerBtn      = document.getElementById('register-btn');
+const registerRole = document.getElementById('register-role');
+const registerFname = document.getElementById('register-fname');
+const registerSurname = document.getElementById('register-surname');
+const registerPhone = document.getElementById('register-phone');
+const registerBtn = document.getElementById('register-btn');
 
-const loginEmail       = document.getElementById('login-email');
-const loginPassword    = document.getElementById('login-password');
-const loginBtn         = document.getElementById('login-btn');
-const logoutBtn        = document.getElementById('logout-btn');
+// Login form elements
+const loginEmail = document.getElementById('login-email');
+const loginPassword = document.getElementById('login-password');
+const loginBtn = document.getElementById('login-btn');
+const logoutBtn = document.getElementById('logout-btn');
 
-const employeeSection  = document.getElementById('employee-section');
-const guestSection     = document.getElementById('guest-section');
+// Sections based on user role
+const employeeSection = document.getElementById('employee-section');
+const guestSection = document.getElementById('guest-section');
 
 /***************************************************
  * 3. REGISTER USER (Saving Role and Personal Info in Firestore)
@@ -64,29 +69,27 @@ const guestSection     = document.getElementById('guest-section');
 registerBtn.addEventListener('click', async () => {
   const email = registerEmail.value.trim();
   const password = registerPassword.value.trim();
-  const fname    = registerFname.value.trim();
-  const surname  = registerSurname.value.trim();
-  const phone    = registerPhone.value.trim();
+  const fname = registerFname.value.trim();
+  const surname = registerSurname.value.trim();
+  const phone = registerPhone.value.trim();
 
+  // Validate required fields
   if (!email || !password || !fname || !surname || !phone) {
     alert("Please enter all required fields.");
     return;
   }
-  
+
+  // Default role assignment (can be modified later)
   const role = "guest";
 
   try {
-    // Create user
+    // Create a new user with email and password
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    console.log("User created:", user.uid);
+    console.log("✅ User created:", user.uid);
 
-    // Assign a unique ID for employees
-
-    
-
-    // Store user role and personal info in Firestore
+    // Store user data in Firestore
     const userRef = doc(db, "users", user.uid);
     await setDoc(userRef, { 
       email, 
@@ -96,20 +99,23 @@ registerBtn.addEventListener('click', async () => {
       phone
     });
 
-    console.log("User data saved to Firestore:", { email, role });
+    console.log("📄 User data saved to Firestore:", { email, role, fname, surname, phone });
     alert("Registered successfully! You can now log in.");
   } catch (error) {
-    console.error("Error registering user:", error.message);
+    console.error("❌ Error registering user:", error.message);
     alert("Registration Error: " + error.message);
   }
 });
 
 /***************************************************
- * 4. LOGIN / LOGOUT
+ * 4. LOGIN / LOGOUT FUNCTIONALITY
  ***************************************************/
+// Handle user login
 loginBtn.addEventListener('click', async () => {
-  const email = loginEmail.value;
-  const password = loginPassword.value;
+  const email = loginEmail.value.trim();
+  const password = loginPassword.value.trim();
+
+  // Validate input fields
   if (!email || !password) {
     alert("Please provide login credentials.");
     return;
@@ -117,28 +123,30 @@ loginBtn.addEventListener('click', async () => {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    alert("Logged in successfully!");
+    alert("✅ Logged in successfully!");
   } catch (error) {
-    alert("Login Error: " + error.message);
+    alert("❌ Login Error: " + error.message);
   }
 });
 
+// Handle user logout
 logoutBtn.addEventListener('click', async () => {
   try {
     await signOut(auth);
-    alert("Logged out successfully!");
+    alert("✅ Logged out successfully!");
+    sessionStorage.setItem("logout", "true"); // Set session flag to avoid unnecessary redirects
   } catch (error) {
-    alert("Logout Error: " + error.message);
+    alert("❌ Logout Error: " + error.message);
   }
 });
 
 /***************************************************
- * 5. ON AUTH STATE CHANGED (Fetch Role from Firestore)
+ * 5. ON AUTH STATE CHANGED (User Role & Redirect)
  ***************************************************/
 onAuthStateChanged(auth, async (user) => {
   console.log("🔄 Auth State Changed:", user);
 
-  // Prevent unnecessary redirects after logout
+  // Prevent redirection loop after logout
   if (sessionStorage.getItem("logout") === "true") {
     console.log("🚪 Logout detected. Staying on index.");
     sessionStorage.removeItem("logout"); // Clear logout flag
@@ -146,8 +154,9 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   if (user) {
-    console.log("✅ User detected. Checking Firestore...");
+    console.log("✅ User detected. Fetching Firestore data...");
 
+    // Retrieve user data from Firestore
     const userDocRef = doc(db, "users", user.uid);
     const userDocSnap = await getDoc(userDocRef);
 
@@ -155,14 +164,17 @@ onAuthStateChanged(auth, async (user) => {
       const userData = userDocSnap.data();
       console.log("📄 User Data:", userData);
 
+      // Redirect user based on their role
       if (userData.role === "employee") {
         console.log("🔹 Redirecting to Employee Page...");
         setTimeout(() => {
           window.location.href = "employee.html";
         }, 500);
       } else if (userData.role === "admin") {
-        // redirect to admin
-        window.location.href = "admin.html";
+        console.log("🔹 Redirecting to Admin Page...");
+        setTimeout(() => {
+          window.location.href = "admin.html";
+        }, 500);
       } else {
         console.log("🔹 Redirecting to Guest Page...");
         setTimeout(() => {
@@ -177,9 +189,9 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-
-import { setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-auth.js";
-
+/***************************************************
+ * 6. SETTING PERSISTENCE (Keep User Logged In)
+ ***************************************************/
 setPersistence(auth, browserLocalPersistence)
   .then(() => {
     console.log("✅ Firebase Auth Persistence Set");
@@ -187,6 +199,3 @@ setPersistence(auth, browserLocalPersistence)
   .catch((error) => {
     console.error("⚠️ Error setting persistence:", error);
   });
-
-
-

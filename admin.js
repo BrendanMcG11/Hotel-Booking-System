@@ -15,11 +15,13 @@ import {
   } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-auth.js";
   
   import {
-    getFirestore,
-    doc,
-    getDoc,
-    setDoc,
-    runTransaction
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  setDoc,
+  runTransaction
   } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js";
   
   // Your Firebase configuration
@@ -70,35 +72,44 @@ import {
   });
 
   // Function to load all users (Guests & Employees)
-async function loadUsers() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "users"));
-    
-    if (querySnapshot.empty) {
-      console.log("❌ No users found in Firestore.");
-      usersList.innerHTML = "<tr><td colspan='4'>No users found</td></tr>";
-      return;
+  async function loadUsers() {
+    try {
+      console.log("🔍 Attempting to fetch users from Firestore...");
+      const querySnapshot = await getDocs(collection(db, "users"));
+      
+      if (querySnapshot.empty) {
+        console.log("❌ No users found in Firestore.");
+        document.getElementById("employees-list").innerHTML = "<tr><td colspan='3'>No employees found</td></tr>";
+        document.getElementById("guests-list").innerHTML = "<tr><td colspan='3'>No guests found</td></tr>";
+        return;
+      }
+  
+      document.getElementById("employees-list").innerHTML = "";
+      document.getElementById("guests-list").innerHTML = "";
+      querySnapshot.forEach((doc) => {
+        const user = doc.data();
+        console.log("✅ User found:", user);  // Debugging log
+  
+        const userRow = `
+          <tr>
+            <td>${user.fname ? user.fname + " " + user.surname : "N/A"}</td>
+            <td>${user.email}</td>
+            <td>${user.phone || "N/A"}</td>
+          </tr>
+        `;
+  
+        if (user.role === "employee") {
+          document.getElementById("employees-list").innerHTML += userRow;
+        } else if (user.role === "guest") {
+          document.getElementById("guests-list").innerHTML += userRow;
+        }
+      });
+    } catch (error) {
+      console.error("❌ Error fetching users:", error);
+      document.getElementById("employees-list").innerHTML = "<tr><td colspan='3'>Error loading employees</td></tr>";
+      document.getElementById("guests-list").innerHTML = "<tr><td colspan='3'>Error loading guests</td></tr>";
     }
-
-    usersList.innerHTML = "";
-    querySnapshot.forEach((doc) => {
-      const user = doc.data();
-      console.log("✅ User found:", user);  // Debugging log
-
-      usersList.innerHTML += `
-        <tr>
-          <td>${user.fname ? user.fname + " " + user.surname : "N/A"}</td>
-          <td>${user.email}</td>
-          <td>${user.phone || "N/A"}</td>
-          <td>${user.role}</td>
-        </tr>
-      `;
-    });
-  } catch (error) {
-    console.error("❌ Error fetching users:", error);
-    usersList.innerHTML = "<tr><td colspan='4'>Error loading users</td></tr>";
   }
-}
 
 // Function to load Employee Logins
 async function loadEmployeeLogins() {
