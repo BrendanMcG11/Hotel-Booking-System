@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book a Room</title>
-    <link rel="stylesheet" href="style.css">
-    <script type="module" src="booking.js"></script>
+  <meta charset="UTF-8">
+  <title>Book Your Stay</title>
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="bookingStyle.css">
 </head>
 <body>
-    <h1>Book Your Stay</h1>
+  <h1>Book Your Stay</h1>
 
-    <div id="booking-container">
-        <p>Selected Room: <span id="room-id"></span></p>
+  <!-- The grid for the calendar -->
+  <div id="calendar-container"></div>
 
-        <label for="check-in">Check-in Date:</label>
-        <input type="date" id="check-in" required>
+  <!-- Buttons to switch months -->
+  <button id="prev-month">Previous</button>
+  <button id="next-month">Next</button>
 
-        <label for="check-out">Check-out Date:</label>
-        <input type="date" id="check-out" required>
+  <p>Selected Range: <span id="selected-range">None</span></p>
 
-        <button id="confirm-booking">Confirm Booking</button>
-    </div>
+  <button id="confirm-booking">Confirm Booking</button>
+  <p id="booking-status"></p>
 
-    <p id="booking-status"></p>
+  <!-- Link to external JS (use type="module" if you have imports) -->
+  <script src="booking.js" type="module"></script>
 </body>
 </html>
